@@ -1,3 +1,3 @@
-export interface canvasProps extends React.DetailedHTMLProps<React.CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement> {
+export interface canvasProps extends React.CanvasHTMLAttributes<HTMLCanvasElement>{
   draw: Function
 }
