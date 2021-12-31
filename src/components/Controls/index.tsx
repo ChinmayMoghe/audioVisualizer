@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { AudioPlayerInterface } from './interface';
+import { ControlsInterface } from './interface';
 import {
   Container,
   PlayButton,
@@ -8,35 +8,36 @@ import {
   PauseIcon,
 } from './style';
 import Seek from '../Seek';
-const AudioPlayer = ({ track }: AudioPlayerInterface) => {
+const Controls = ({ track }: ControlsInterface) => {
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const audioRef = useRef<HTMLAudioElement>(null);
   const animationRef = useRef<number>(0);
   useEffect(() => {
-    if (audioRef?.current?.readyState) {
+    if (track?.readyState && track?.readyState > 0) {
       // check if media is loaded and ready to play
-      const duration = audioRef.current.readyState > 0 ? audioRef.current.duration : 0;
-      setDuration(duration);
+      setDuration(track.duration);
     }
-  }, [audioRef?.current?.readyState]);
+  }, [track?.readyState]);
 
   const updatePlayState = () => {
-    if (audioRef.current?.currentTime) {
-      setCurrentTime(audioRef.current?.currentTime);
+    if (track?.currentTime) {
+      setCurrentTime(track?.currentTime);
     }
-    animationRef.current = requestAnimationFrame(updatePlayState);
+    if (track?.ended) {
+      setPlaying(false);
+    }
+    animationRef.current = startAnimation();
   };
 
   const changePlayState = () => {
-    if (!audioRef.current) return;
+    if (!track) return;
     if (playing) {
-      audioRef.current.pause();
-      cancelAnimationFrame(animationRef.current);
+      track.pause();
+      stopAnimation();
     } else {
-      audioRef.current.play();
-      animationRef.current = requestAnimationFrame(updatePlayState);
+      track.play();
+      animationRef.current = startAnimation();
     };
     setPlaying((prevVal) => !prevVal);
   };
@@ -50,22 +51,24 @@ const AudioPlayer = ({ track }: AudioPlayerInterface) => {
   }
 
   const changeCurrentTime = (time: number) => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = time;
+    if (track) {
+      track.currentTime = time;
       setCurrentTime(time)
     }
   };
 
+  const stopAnimation = () => cancelAnimationFrame(animationRef.current);
+  const startAnimation = () => requestAnimationFrame(updatePlayState);
+
   return (
     <Container>
-      <audio ref={audioRef} src={track} preload="metadata" />
       <PlayButton onClick={changePlayState}>
         {playing ? <PauseIcon /> : <PlayIcon />}
       </PlayButton>
       <TimeStamp><span>{formatDuration(currentTime)}</span> / <span>{formatDuration(duration)}</span></TimeStamp>
-      <Seek currentTime={currentTime} duration={duration} changeCurrentTime={changeCurrentTime} />
+      <Seek currentTime={currentTime} duration={duration} changeCurrentTime={changeCurrentTime} startAnimation={startAnimation} stopAnimation={stopAnimation} />
     </Container>
   );
 };
 
-export default AudioPlayer;
+export default Controls;
