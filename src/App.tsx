@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './App.css'
 import Canvas from './components/Canvas';
-import AudioPlayer from './components/AudioPlayer';
+import Controls from './components/Controls';
 import FeelGood from './assets/Syn Cole - Feel Good [NCS Release].webm';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 function App() {
-  const draw = (ctx:CanvasRenderingContext2D)=>{};
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [track, setTrack] = useState<HTMLAudioElement>();
+  const draw = (ctx: CanvasRenderingContext2D) => { };
+
+  const loadedMetadata = () => {
+    if (audioRef.current) {
+      setTrack(audioRef.current);
+    }
+  };
+
   return (
     <div className="App">
-      <Canvas draw={draw} width={400} height={400}/>
-      <AudioPlayer track={FeelGood}/>
+      <audio ref={audioRef} src={FeelGood} preload="metadata" onLoadedMetadata={loadedMetadata} />
+      <Canvas draw={draw} width={400} height={400} />
+      <Controls track={track} />
     </div>
   )
 }

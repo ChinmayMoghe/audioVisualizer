@@ -22,6 +22,9 @@ export const Thumb = styled.div.attrs<ThumbProps>(({ left }) => ({
 }))<ThumbProps>`
   ${showPointer}
   position:absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: ${THUMB_HEIGHT};
   height: ${THUMB_HEIGHT};
   background-color: purple;
@@ -30,7 +33,9 @@ export const Thumb = styled.div.attrs<ThumbProps>(({ left }) => ({
 `;
 
 export const ThumbIcon = styled(FaCircle)`
-  color: purple;
+  color: white;
+  width: 0.1rem;
+  height: 0.1rem;
 `;
 
 export const ProgressBar = styled.div.attrs<ProgressBarProps>(({ width }) => ({

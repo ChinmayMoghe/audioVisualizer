@@ -8,4 +8,6 @@ export interface SeekProps {
   currentTime: number | undefined;
   duration: number;
   changeCurrentTime: Function;
+  stopAnimation: Function;
+  startAnimation: Function;
 }
