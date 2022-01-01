@@ -15,7 +15,6 @@ const Seek = ({ currentTime, duration, changeCurrentTime, stopAnimation, startAn
   const ProgressRef = useRef<HTMLDivElement>(null);
   const TrackRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    console.log('ran effect', isMouseDown);
     const dragThumb = (ev: MouseEvent) => {
       ev.preventDefault();
       const dragXPos = ev.pageX;
@@ -34,7 +33,6 @@ const Seek = ({ currentTime, duration, changeCurrentTime, stopAnimation, startAn
           } else if (newProgressBarWidth > track.clientWidth) {
             newProgressBarWidth = track.clientWidth;
           }
-          console.log("mouse move", { thumbMoveDistance, x: ev.pageX, newProgressBarWidth, previousWidth: progressBar.clientWidth, previousDragVal: trackThumb.previousDragVal });
           thumb.style.left = `${newProgressBarWidth}px`;
           progressBar.style.width = `${newProgressBarWidth}px`;
           if (trackThumb.previousDragVal !== dragXPos) {
@@ -52,11 +50,9 @@ const Seek = ({ currentTime, duration, changeCurrentTime, stopAnimation, startAn
         window.removeEventListener("mousemove", dragThumb);
         const track = TrackRef.current;
         if (track) {
-          const xpos = trackThumb.newProgressBarWidth / track.clientWidth;
-          console.log({ newWidth: trackThumb.newProgressBarWidth, xpos, length: track.clientWidth });
+        const xpos = trackThumb.newProgressBarWidth / track.clientWidth;
           changeCurrentTime(xpos * duration);
         }
-        console.log("mouse up");
         setMouseDown(false);
         trackThumb.previousDragVal = 0;
         startAnimation();
@@ -65,7 +61,6 @@ const Seek = ({ currentTime, duration, changeCurrentTime, stopAnimation, startAn
     window.addEventListener("mousemove", dragThumb);
     window.addEventListener("mouseup", setThumbPosition)
     return () => {
-      console.log('ran cleanup');
       window.removeEventListener("mouseup", setThumbPosition)
     };
   }, [isMouseDown]);
@@ -81,7 +76,6 @@ const Seek = ({ currentTime, duration, changeCurrentTime, stopAnimation, startAn
     if (!isMouseDown) {
       const clickedTarget = ev.currentTarget;
       const xpos = ((ev.pageX - clickedTarget.offsetLeft) / clickedTarget.clientWidth);
-      console.log({ xpos })
       changeCurrentTime(xpos * duration);
     }
   };
