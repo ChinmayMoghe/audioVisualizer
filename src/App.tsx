@@ -20,6 +20,7 @@ function App() {
   }, [track?.readyState]);
 
   const createAudioContext = () => {
+    // call this function on click of a button, to create audio context
     if (!audioCtx.current && !analyser.current) {
       audioCtx.current = new window.AudioContext();
       analyser.current = audioCtx.current.createAnalyser();
@@ -33,7 +34,6 @@ function App() {
         }
       }
     }
-    console.log({ src: source.current, ctx: audioCtx.current, anly: analyser.current })
   };
 
   const loadedMetadata = () => {
@@ -46,7 +46,7 @@ function App() {
   return (
     <div className="App">
       <audio ref={audioRef} src={FeelGood} preload="metadata" onLoadedMetadata={loadedMetadata} />
-      <Canvas width={400} height={400} track={track} playing={playing} />
+      <Canvas width={400} height={400} playing={playing} analyzer={analyser.current} />
       <Controls track={track} playing={playing} setPlaying={setPlaying} duration={duration} createAudioContext={createAudioContext} />
     </div>
   )
