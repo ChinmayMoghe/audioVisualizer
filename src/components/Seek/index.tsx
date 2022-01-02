@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { SeekProps } from './interface';
-import { ProgressBar, Thumb, Track, ThumbIcon } from './style';
+import { ProgressBar, Thumb, Track } from './style';
 
 
 const Seek = ({ currentTime, duration, changeCurrentTime, stopAnimation, startAnimation }: SeekProps) => {
