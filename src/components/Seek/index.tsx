@@ -50,7 +50,7 @@ const Seek = ({ currentTime, duration, changeCurrentTime, stopAnimation, startAn
         window.removeEventListener("mousemove", dragThumb);
         const track = TrackRef.current;
         if (track) {
-        const xpos = trackThumb.newProgressBarWidth / track.clientWidth;
+          const xpos = trackThumb.newProgressBarWidth / track.clientWidth;
           changeCurrentTime(xpos * duration);
         }
         setMouseDown(false);
@@ -90,7 +90,6 @@ const Seek = ({ currentTime, duration, changeCurrentTime, stopAnimation, startAn
       <Track id="track" ref={TrackRef} onClick={goToTime}>
         <ProgressBar ref={ProgressRef} id="progress-bar" width={getProgress()} />
         <Thumb ref={ThumbRef} id="thumb" left={getProgress()} onMouseDown={getDragStart}>
-          {/* <ThumbIcon id="thumb-icon" /> */}
         </Thumb>
       </Track>
     </Fragment>
