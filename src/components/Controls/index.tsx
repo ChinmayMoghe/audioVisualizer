@@ -8,18 +8,9 @@ import {
   PauseIcon,
 } from './style';
 import Seek from '../Seek';
-const Controls = ({ track }: ControlsInterface) => {
-  const [playing, setPlaying] = useState(false);
-  const [duration, setDuration] = useState(0);
+const Controls = ({ track, playing, setPlaying, duration, createAudioContext }: ControlsInterface) => {
   const [currentTime, setCurrentTime] = useState(0);
   const animationRef = useRef<number>(0);
-  useEffect(() => {
-    if (track?.readyState && track?.readyState > 0) {
-      // check if media is loaded and ready to play
-      setDuration(track.duration);
-    }
-  }, [track?.readyState]);
-
   const updatePlayState = () => {
     if (track?.currentTime) {
       setCurrentTime(track?.currentTime);
@@ -39,7 +30,8 @@ const Controls = ({ track }: ControlsInterface) => {
       track.play();
       animationRef.current = startAnimation();
     };
-    setPlaying((prevVal) => !prevVal);
+    createAudioContext();
+    setPlaying((prevVal: Boolean) => !prevVal);
   };
 
   const prefixZero = (num: number): string => num > 9 ? `${num}` : `0${num}`;
