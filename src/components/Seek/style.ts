@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { ProgressBarProps, ThumbProps } from './interface';
-import { FaCircle } from 'react-icons/fa';
 import { showPointer } from '../../common/styles';
 
 const TRACK_HEIGHT = '0.2rem';
@@ -30,12 +29,6 @@ export const Thumb = styled.div.attrs<ThumbProps>(({ left }) => ({
   background-color: purple;
   border-radius: 50%;
   top: calc((-50% + ((${TRACK_HEIGHT} - ${THUMB_HEIGHT}) / 2)));
-`;
-
-export const ThumbIcon = styled(FaCircle)`
-  color: white;
-  width: 0.1rem;
-  height: 0.1rem;
 `;
 
 export const ProgressBar = styled.div.attrs<ProgressBarProps>(({ width }) => ({
