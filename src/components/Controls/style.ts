@@ -1,13 +1,9 @@
 import styled from 'styled-components';
-import {
-  BsFillPlayFill,
-  BsPauseFill,
-} from 'react-icons/bs';
+import { BsFillPlayFill, BsPauseFill } from 'react-icons/bs';
 import { showPointer } from '../../common/styles';
 
 export const Container = styled.div`
   // Remove borders
-  border: 1px solid red;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -22,7 +18,7 @@ export const PlayButton = styled.button`
   height: 5rem;
   border-radius: 50%;
   background-color: purple;
-  border:1px solid transparent;
+  border: 1px solid transparent;
 `;
 
 export const TimeStamp = styled.span`
@@ -32,10 +28,10 @@ export const TimeStamp = styled.span`
 export const PlayIcon = styled(BsFillPlayFill)`
   width: 2rem;
   height: 2rem;
-  color:white;
+  color: white;
 `;
 export const PauseIcon = styled(BsPauseFill)`
   width: 2rem;
   height: 2rem;
-  color:white;
+  color: white;
 `;

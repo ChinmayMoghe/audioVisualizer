@@ -8,7 +8,7 @@ import {
   PauseIcon,
 } from './style';
 import Seek from '../Seek';
-const Controls = ({ track, playing, setPlaying, duration, createAudioContext }: ControlsInterface) => {
+const Controls = ({ track, playing, changePlayState, duration, createAudioContext }: ControlsInterface) => {
   const [currentTime, setCurrentTime] = useState(0);
   const animationRef = useRef<number>(0);
   const updatePlayState = () => {
@@ -16,12 +16,12 @@ const Controls = ({ track, playing, setPlaying, duration, createAudioContext }: 
       setCurrentTime(track?.currentTime);
     }
     if (track?.ended) {
-      setPlaying(false);
+      changePlayState(false);
     }
     animationRef.current = startAnimation();
   };
 
-  const changePlayState = () => {
+  const playAction = () => {
     if (!track) return;
     if (playing) {
       track.pause();
@@ -31,7 +31,7 @@ const Controls = ({ track, playing, setPlaying, duration, createAudioContext }: 
       animationRef.current = startAnimation();
     };
     createAudioContext();
-    setPlaying((prevVal: Boolean) => !prevVal);
+    changePlayState();
   };
 
   const prefixZero = (num: number): string => num > 9 ? `${num}` : `0${num}`;
@@ -54,7 +54,7 @@ const Controls = ({ track, playing, setPlaying, duration, createAudioContext }: 
 
   return (
     <Container>
-      <PlayButton onClick={changePlayState}>
+      <PlayButton onClick={playAction}>
         {playing ? <PauseIcon /> : <PlayIcon />}
       </PlayButton>
       <TimeStamp><span>{formatDuration(currentTime)}</span> / <span>{formatDuration(duration)}</span></TimeStamp>

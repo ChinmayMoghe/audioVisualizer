@@ -1,6 +1,4 @@
 import styled from 'styled-components';
 
-const CanvasElement = styled.canvas`
-  border:1px solid red
-`;
+const CanvasElement = styled.canvas``;
 export default CanvasElement;

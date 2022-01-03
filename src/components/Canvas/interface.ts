@@ -1,5 +1,5 @@
 export interface canvasProps
   extends React.CanvasHTMLAttributes<HTMLCanvasElement> {
-  playing: Boolean;
+  paused: Boolean | undefined;
   analyzer: AnalyserNode | undefined;
 }

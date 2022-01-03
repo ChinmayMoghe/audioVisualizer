@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import './App.css'
 import Canvas from './components/Canvas';
 import Controls from './components/Controls';
-import FeelGood from './assets/Syn Cole - Feel Good [NCS Release].webm';;
+import FeelGood from './assets/Syn Cole - Feel Good [NCS Release].webm';
 
 function App() {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -31,6 +31,7 @@ function App() {
         if (source.current && analyser.current && audioCtx.current) {
           source.current.connect(analyser.current);
           analyser.current.connect(audioCtx.current.destination);
+          analyser.current.fftSize = 128;
         }
       }
     }
@@ -42,12 +43,19 @@ function App() {
     }
   };
 
+  const changePlayState = (state: Boolean) => {
+    if (state !== undefined) {
+      setPlaying(state);
+    } else {
+      setPlaying(prevPlayState => !prevPlayState);
+    }
+  }
 
   return (
     <div className="App">
       <audio ref={audioRef} src={FeelGood} preload="metadata" onLoadedMetadata={loadedMetadata} />
-      <Canvas width={400} height={400} playing={playing} analyzer={analyser.current} />
-      <Controls track={track} playing={playing} setPlaying={setPlaying} duration={duration} createAudioContext={createAudioContext} />
+      <Canvas width={800} height={400} paused={track?.paused} analyzer={analyser.current} />
+      <Controls track={track} playing={playing} changePlayState={changePlayState} duration={duration} createAudioContext={createAudioContext} />
     </div>
   )
 }

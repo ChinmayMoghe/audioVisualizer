@@ -6,14 +6,14 @@ const Canvas = (props: canvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasCtx = useRef<CanvasRenderingContext2D | null>(null);
   const visualizerAnimationRef = useRef<number>(0);
-  const { playing, analyzer, ...rest } = props;
+  const { paused, analyzer, ...rest } = props;
   const [barWidth, setbarWidth] = useState(0);
   const barHeight = useRef<number>(0);
   useEffect(() => {
     if (barWidth === 0) {
       if (analyzer && canvasRef.current) {
         // set bar width if not set to any width
-        setbarWidth(canvasRef.current.width / analyzer.frequencyBinCount);
+        setbarWidth((canvasRef.current.width / 2) / analyzer.frequencyBinCount);
       }
       if (canvasRef.current) {
         canvasCtx.current = canvasRef.current.getContext("2d");
@@ -22,7 +22,6 @@ const Canvas = (props: canvasProps) => {
   }, [analyzer]);
   useEffect(() => {
     const animate = () => {
-      console.log('played');
       if (analyzer) {
         const dataArr = new Uint8Array(analyzer.frequencyBinCount);
         analyzer.getByteFrequencyData(dataArr);
@@ -30,6 +29,10 @@ const Canvas = (props: canvasProps) => {
         visualizerAnimationRef.current = requestAnimationFrame(animate);
       }
     };
+    const getColor = (barHeight: number, idx: number) => {
+      const [r, g, b] = [barHeight, idx / 2, idx * barHeight / 30];
+      return `rgb(${r},${g},${b})`;
+    }
     const drawVisualizer = (bufferLength: number, barWidth: number, barHeight: number, dataArr: Uint8Array) => {
       const ctx = canvasCtx.current;
       const canvas = canvasRef.current;
@@ -37,19 +40,26 @@ const Canvas = (props: canvasProps) => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (let i = 0; i < bufferLength; i++) {
           let xpos = i * barWidth;
-          barHeight = dataArr[i] * 2;
-          ctx.fillStyle = "white"
-          ctx.fillRect(xpos, canvas.height - barHeight, barWidth, barHeight);
+          barHeight = -(dataArr[i] * 2 > canvas.height ? dataArr[i] * 2 - canvas.height / 2 : dataArr[i]);
+          ctx.fillStyle = getColor(Math.abs(barHeight), i);
+          ctx.fillRect((canvas.width / 2) + xpos, canvas.height, barWidth, barHeight);
+        }
+        for (let i = 0; i < bufferLength; i++) {
+          let xpos = i * barWidth;
+          barHeight = -(dataArr[i] * 2 > canvas.height ? dataArr[i] * 2 - canvas.height / 2 : dataArr[i]);
+          ctx.fillStyle = getColor(Math.abs(barHeight), i);
+          ctx.fillRect((canvas.width / 2) - xpos, canvas.height, barWidth, barHeight);
         }
       }
     };
-    if (playing) {
-      console.log('is playing');
-      animate();
-    } else {
-      cancelAnimationFrame(visualizerAnimationRef.current);
+    if (paused) {
+      if (visualizerAnimationRef.current !== 0) {
+        console.log("cancelled animation");
+        cancelAnimationFrame(visualizerAnimationRef.current);
+      }
     }
-  }, [playing]);
+    animate();
+  }, [paused, visualizerAnimationRef.current]);
   return (<CanvasElement ref={canvasRef} {...rest} />)
 };
 
