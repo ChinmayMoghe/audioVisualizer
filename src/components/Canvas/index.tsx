@@ -30,7 +30,7 @@ const Canvas = (props: canvasProps) => {
       }
     };
     const getColor = (barHeight: number, idx: number) => {
-      const [r, g, b] = [barHeight, idx / 2, idx * barHeight / 30];
+      const [r, g, b] = [idx*barHeight/5,idx/4,barHeight/2];
       return `rgb(${r},${g},${b})`;
     }
     const drawVisualizer = (bufferLength: number, barWidth: number, barHeight: number, dataArr: Uint8Array) => {
