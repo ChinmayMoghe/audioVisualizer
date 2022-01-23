@@ -1,3 +1,7 @@
-# Audio visualizer / player 🎵
+<h1 align="center">Welcome to Audio visualizer / player 🎵</h1>
 
-Live demo: https://dreamy-leakey-d3cb43.netlify.app/
+> Project Description Here
+
+## 🔥 [Live URL]
+
+https://dreamy-leakey-d3cb43.netlify.app/
