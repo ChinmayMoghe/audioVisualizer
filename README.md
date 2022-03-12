@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to Audio visualizer / player 🎵</h1>
 
-> Project Description Here
+> A audio visualizer built with React.js
 
 ## 🔥 [Live URL]
 
