@@ -2,6 +2,6 @@
 
 > A audio visualizer built with React.js
 
-## 🔥 (Go to audio visualizer) [https://dreamy-leakey-d3cb43.netlify.app/]
+## 🔥 [Go to audio visualizer](https://dreamy-leakey-d3cb43.netlify.app/)
 
 
